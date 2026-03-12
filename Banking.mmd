@@ -1,0 +1,40 @@
+flowchart TB
+  %% Banking System Boundary
+  subgraph BSB[Banking System Boundary]
+    direction TB
+
+    C[Customer]
+    W[Web/Mobile App]
+    A[API Gateway]
+
+    TPS[Third-Party Services]
+    AUTH[Authentication]
+    CORE[Core Banking]
+
+    DB[(Database)]
+
+    %% Top row
+    C --> W
+    W --> A
+
+    %% Downward links
+    C --> TPS
+    W --> AUTH
+    A --> CORE
+
+    %% Middle row
+    TPS --> AUTH
+    AUTH --> CORE
+
+    %% To database
+    TPS --> DB
+    AUTH --> DB
+    CORE --> DB
+  end
+
+  %% Styling (optional)
+  style BSB stroke-dasharray: 6 6,stroke:#9aa0a6,fill:transparent
+  classDef box fill:#e9f2ff,stroke:#2b6cb0,stroke-width:2px,rx:8,ry:8
+  class C,W,A,TPS,AUTH,CORE box
+  classDef db fill:#e9f2ff,stroke:#2b6cb0,stroke-width:2px
+  class DB db

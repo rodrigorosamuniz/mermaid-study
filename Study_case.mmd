@@ -1,0 +1,24 @@
+flowchart LR
+	subgraph Internet
+		A[Attacker - Internet]
+	end
+
+	subgraph AWS_Public["AWS Public Subnet"]
+		B[Web App or WAF - EC2: SSRF possible]
+	end
+
+	subgraph AWS_Internal["AWS Internal Services"]
+		C[IMDS 169.254.169.254]
+		D[IAM Role - Temporary Creds: Overly permissive]
+	end
+
+	subgraph AWS_Data["AWS Data Layer"]
+		E[S3 Buckets - Sensitive Data PII]
+	end
+
+	A -->|HTTPS| B
+	B -->|SSRF| C
+	C --> D
+	D -->|List and Get| E
+	E -->|Exfiltration| A
+    
